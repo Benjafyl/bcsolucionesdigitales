@@ -60,3 +60,14 @@ Antes de publicar, reemplaza estos datos en `index.html`:
 - Correo: `contacto@bcsolucionesdigitales.com`
 - Instagram: `https://instagram.com/bcsolucionesdigitales`
 - Facebook y LinkedIn: links placeholder actuales
+
+## Documentacion del proyecto
+
+- [AGENTS.md](AGENTS.md)
+- [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- [docs/AI_AGENT_PLAN.md](docs/AI_AGENT_PLAN.md)
+- [docs/SUPABASE_PLAN.md](docs/SUPABASE_PLAN.md)
+- [docs/WHATSAPP_META_PLAN.md](docs/WHATSAPP_META_PLAN.md)
+- [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md)

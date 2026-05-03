@@ -38,8 +38,10 @@ const destinationEmail = 'contacto@bcsolucionesdigitales.com';
 
 const validators = {
   name: (value) => (value.trim().length >= 2 ? '' : 'Ingresa tu nombre.'),
+  company: (value) => (value.trim().length >= 2 ? '' : 'Ingresa el nombre de tu empresa o negocio.'),
   email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un email valido.'),
   phone: (value) => (/^[+\d\s()-]{8,}$/.test(value.trim()) ? '' : 'Ingresa un telefono valido.'),
+  service: (value) => (value ? '' : 'Selecciona un servicio de interes.'),
   message: (value) => (value.trim().length >= 10 ? '' : 'Escribe un mensaje de al menos 10 caracteres.'),
 };
 
@@ -80,8 +82,9 @@ contactForm?.addEventListener('submit', (event) => {
   }
 
   const subject = encodeURIComponent(`Consulta desde bcsolucionesdigitales.com - ${values.name}`);
+  const whatsappConsent = values.whatsappConsent === 'on' ? 'Si' : 'No';
   const body = encodeURIComponent(
-    `Nombre: ${values.name}\nEmail: ${values.email}\nTelefono: ${values.phone}\n\nMensaje:\n${values.message}`,
+    `Nombre: ${values.name}\nEmpresa o negocio: ${values.company}\nTelefono: ${values.phone}\nCorreo: ${values.email}\nServicio de interes: ${values.service}\nAcepta contacto por WhatsApp: ${whatsappConsent}\n\nMensaje:\n${values.message}`,
   );
 
   window.location.href = `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
