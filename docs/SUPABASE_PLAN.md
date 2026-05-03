@@ -103,6 +103,15 @@ Campos sugeridos:
 - `summary`
 - `created_at`
 
+Valores permitidos para `source`:
+
+- `web_form`
+- `whatsapp`
+- `phone`
+- `email`
+- `manual`
+- `unknown`
+
 ### `conversations`
 
 Conversaciones por canal.
@@ -115,6 +124,14 @@ Campos sugeridos:
 - `channel`
 - `status`
 - `created_at`
+
+Valores permitidos para `channel`:
+
+- `web_form`
+- `whatsapp`
+- `email`
+- `phone`
+- `manual`
 
 ### `messages`
 
@@ -150,8 +167,41 @@ Campos sugeridos:
 - `company_name`
 - `message`
 - `accepted_whatsapp_contact`
+- `service_interest`
 - `status`
 - `created_at`
+
+Valores permitidos para `source`:
+
+- `web_form`
+- `whatsapp`
+- `phone`
+- `email`
+- `manual`
+- `unknown`
+
+## Flujo formulario web
+
+La landing debe enviar el formulario a la Edge Function `submit-contact-request`, no directamente a tablas Supabase.
+
+Payload esperado:
+
+- `name`
+- `email`
+- `phone`
+- `company_name`
+- `service_interest`
+- `message`
+- `accepted_whatsapp_contact`
+
+La Edge Function valida los datos, busca la organizacion `byc` y crea:
+
+- un `lead` con `source = web_form` y `status = new`;
+- un `contact_request` asociado con `source = web_form`;
+- una `conversation` con `channel = web_form` y `status = open`;
+- un `message` inicial con `role = user`.
+
+La `SUPABASE_SERVICE_ROLE_KEY` solo se usa dentro de la Edge Function. No debe llegar al navegador.
 
 ### `meeting_requests`
 

@@ -158,7 +158,14 @@
             </div>
           </div>
 
-          <form class="contact-form reveal" id="contactForm" novalidate>
+          <form
+            class="contact-form reveal"
+            id="contactForm"
+            action="mailto:contacto@bcsolucionesdigitales.com"
+            method="post"
+            enctype="text/plain"
+            novalidate
+          >
             <div class="form-row">
               <label for="name">Nombre</label>
               <input id="name" name="name" type="text" autocomplete="name" placeholder="Tu nombre" required />
@@ -167,25 +174,25 @@
 
             <div class="form-row">
               <label for="company">Empresa o negocio</label>
-              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Nombre de tu negocio" required />
-              <small class="field-error" data-error-for="company"></small>
+              <input id="company" name="company_name" type="text" autocomplete="organization" placeholder="Nombre de tu negocio" />
+              <small class="field-error" data-error-for="company_name"></small>
             </div>
 
             <div class="form-row">
               <label for="phone">Telefono</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+56XXXXXXXXX" required />
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+56XXXXXXXXX" />
               <small class="field-error" data-error-for="phone"></small>
             </div>
 
             <div class="form-row">
               <label for="email">Correo</label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="correo@empresa.cl" required />
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="correo@empresa.cl" />
               <small class="field-error" data-error-for="email"></small>
             </div>
 
             <div class="form-row">
               <label for="service">Servicio de interes</label>
-              <select id="service" name="service" required>
+              <select id="service" name="service_interest">
                 <option value="">Selecciona una opcion</option>
                 <option value="Landing pages profesionales">Landing pages profesionales</option>
                 <option value="Automatizaciones con IA">Automatizaciones con IA</option>
@@ -193,7 +200,7 @@
                 <option value="Integraciones digitales">Integraciones digitales</option>
                 <option value="No estoy seguro">No estoy seguro</option>
               </select>
-              <small class="field-error" data-error-for="service"></small>
+              <small class="field-error" data-error-for="service_interest"></small>
             </div>
 
             <div class="form-row">
@@ -204,7 +211,7 @@
 
             <div class="form-row consent-row">
               <label for="whatsappConsent">
-                <input id="whatsappConsent" name="whatsappConsent" type="checkbox" />
+                <input id="whatsappConsent" name="accepted_whatsapp_contact" type="checkbox" />
                 <span>Acepto que BC Soluciones Digitales me contacte por WhatsApp sobre mi solicitud.</span>
               </label>
             </div>

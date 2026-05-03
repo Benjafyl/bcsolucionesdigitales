@@ -9,16 +9,41 @@ Usar `.env.example` si mas adelante se necesita un archivo de ejemplo.
 ## Supabase
 
 ```env
-SUPABASE_URL=
+SUPABASE_PROJECT_ID=xhvkqkeqgnfxhwlibqrd
+SUPABASE_URL=https://xhvkqkeqgnfxhwlibqrd.supabase.co
+SUPABASE_DB_PASSWORD=
+SUPABASE_ACCESS_TOKEN=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+VITE_SUPABASE_CONTACT_FUNCTION_URL=https://xhvkqkeqgnfxhwlibqrd.supabase.co/functions/v1/submit-contact-request
 ```
 
 Reglas:
 
+- `SUPABASE_PROJECT_ID`, `SUPABASE_DB_PASSWORD` y `SUPABASE_ACCESS_TOKEN` se usan para tareas locales de CLI y administracion.
 - `SUPABASE_ANON_KEY` puede usarse en frontend solo si las politicas RLS estan correctamente configuradas.
 - `SUPABASE_SERVICE_ROLE_KEY` solo puede usarse en backend.
+- `VITE_SUPABASE_CONTACT_FUNCTION_URL` puede exponerse al frontend porque es solo la URL publica de la Edge Function.
 - Nunca exponer `SUPABASE_SERVICE_ROLE_KEY` al navegador.
+- Nunca imprimir tokens, passwords ni claves Supabase en consola o logs.
+
+## Supabase Edge Functions
+
+Las Edge Functions de Supabase reciben por defecto:
+
+```env
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_DB_URL=
+```
+
+Reglas:
+
+- `submit-contact-request` usa `SUPABASE_SERVICE_ROLE_KEY` solo dentro del runtime de la funcion.
+- La landing no debe recibir `SUPABASE_SERVICE_ROLE_KEY`.
+- Para pruebas locales, cargar secretos con `supabase functions serve --env-file .env.local`.
+- No versionar archivos `.env` bajo `supabase/functions/`.
 
 ## Meta WhatsApp API
 

@@ -34,15 +34,18 @@ document.querySelectorAll('.reveal').forEach((element) => {
 
 const contactForm = document.querySelector('#contactForm');
 const formStatus = document.querySelector('.form-status');
-const destinationEmail = 'contacto@bcsolucionesdigitales.com';
+const CONTACT_FUNCTION_URL =
+  import.meta.env.VITE_SUPABASE_CONTACT_FUNCTION_URL ||
+  'https://xhvkqkeqgnfxhwlibqrd.supabase.co/functions/v1/submit-contact-request';
+const SUBMIT_SUCCESS_MESSAGE = 'Solicitud enviada correctamente. Te contactaremos pronto.';
+const SUBMIT_ERROR_MESSAGE = 'No pudimos enviar tu solicitud. Intenta nuevamente o escríbenos por WhatsApp.';
+let isSubmittingContactForm = false;
 
 const validators = {
   name: (value) => (value.trim().length >= 2 ? '' : 'Ingresa tu nombre.'),
-  company: (value) => (value.trim().length >= 2 ? '' : 'Ingresa el nombre de tu empresa o negocio.'),
-  email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un email valido.'),
-  phone: (value) => (/^[+\d\s()-]{8,}$/.test(value.trim()) ? '' : 'Ingresa un telefono valido.'),
-  service: (value) => (value ? '' : 'Selecciona un servicio de interes.'),
-  message: (value) => (value.trim().length >= 10 ? '' : 'Escribe un mensaje de al menos 10 caracteres.'),
+  email: (value) =>
+    !value.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un email valido.',
+  message: (value) => (value.trim().length >= 5 ? '' : 'Escribe un mensaje de al menos 5 caracteres.'),
 };
 
 function setFieldError(fieldName, message) {
@@ -56,8 +59,31 @@ function setFieldError(fieldName, message) {
   input?.classList.toggle('has-error', Boolean(message));
 }
 
-contactForm?.addEventListener('submit', (event) => {
+function setFormStatus(message, statusClass = '') {
+  if (!formStatus) {
+    return;
+  }
+
+  formStatus.textContent = message;
+  formStatus.className = `form-status${statusClass ? ` ${statusClass}` : ''}`;
+}
+
+function setSubmitState(isSubmitting) {
+  isSubmittingContactForm = isSubmitting;
+
+  const submitButton = contactForm?.querySelector('[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = isSubmitting;
+    submitButton.textContent = isSubmitting ? 'Enviando...' : 'Enviar consulta';
+  }
+}
+
+contactForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  if (isSubmittingContactForm) {
+    return;
+  }
 
   const formData = new FormData(contactForm);
   const values = Object.fromEntries(formData.entries());
@@ -74,23 +100,44 @@ contactForm?.addEventListener('submit', (event) => {
 
   if (firstInvalidField) {
     firstInvalidField.focus();
-    if (formStatus) {
-      formStatus.textContent = 'Revisa los campos marcados antes de enviar.';
-      formStatus.className = 'form-status is-error';
-    }
+    setFormStatus('Revisa los campos marcados antes de enviar.', 'is-error');
     return;
   }
 
-  const subject = encodeURIComponent(`Consulta desde bcsolucionesdigitales.com - ${values.name}`);
-  const whatsappConsent = values.whatsappConsent === 'on' ? 'Si' : 'No';
-  const body = encodeURIComponent(
-    `Nombre: ${values.name}\nEmpresa o negocio: ${values.company}\nTelefono: ${values.phone}\nCorreo: ${values.email}\nServicio de interes: ${values.service}\nAcepta contacto por WhatsApp: ${whatsappConsent}\n\nMensaje:\n${values.message}`,
-  );
+  const payload = {
+    name: String(values.name || '').trim(),
+    email: String(values.email || '').trim() || null,
+    phone: String(values.phone || '').trim() || null,
+    company_name: String(values.company_name || '').trim() || null,
+    service_interest: String(values.service_interest || '').trim() || null,
+    message: String(values.message || '').trim(),
+    accepted_whatsapp_contact: values.accepted_whatsapp_contact === 'on',
+  };
 
-  window.location.href = `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
+  setSubmitState(true);
+  setFormStatus('Enviando solicitud...');
 
-  if (formStatus) {
-    formStatus.textContent = 'Mensaje preparado en tu cliente de correo.';
-    formStatus.className = 'form-status is-success';
+  try {
+    const response = await fetch(CONTACT_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok || !result?.success) {
+      throw new Error('submit_failed');
+    }
+
+    contactForm.reset();
+    Object.keys(validators).forEach((fieldName) => setFieldError(fieldName, ''));
+    setFormStatus(SUBMIT_SUCCESS_MESSAGE, 'is-success');
+  } catch {
+    setFormStatus(SUBMIT_ERROR_MESSAGE, 'is-error');
+  } finally {
+    setSubmitState(false);
   }
 });
