@@ -80,7 +80,7 @@ Ejemplo de links:
 <a href="https://wa.me/56XXXXXXXXX">Hablar por WhatsApp</a>
 <a href="tel:+56XXXXXXXXX">Llamar a Benjamin</a>
 <a href="tel:+56XXXXXXXXX">Llamar a Carlos</a>
-<a href="mailto:contacto@bcsolucionesdigitales.com">Enviar correo</a>
+<a href="mailto:benjafyl@gmail.com">Enviar correo</a>
 ```
 
 ## Primeras respuestas del bot

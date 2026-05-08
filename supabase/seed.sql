@@ -10,7 +10,7 @@ values (
   'BC Soluciones Digitales',
   'byc',
   'https://bcsolucionesdigitales.com',
-  'contacto@bcsolucionesdigitales.com',
+  'benjafyl@gmail.com',
   '+56XXXXXXXXX',
   '{"notes":"Organizacion inicial para el MVP comercial de ByC."}'::jsonb
 )
@@ -93,7 +93,7 @@ from org
 cross join (
   values
     ('web_form', 'Formulario web', 'https://bcsolucionesdigitales.com', true, '{"placeholder":false}'::jsonb),
-    ('email', 'Correo de contacto', 'contacto@bcsolucionesdigitales.com', true, '{"placeholder":false}'::jsonb),
+    ('email', 'Correo de contacto', 'benjafyl@gmail.com', true, '{"placeholder":false}'::jsonb),
     ('whatsapp', 'WhatsApp bot', '+56XXXXXXXXX', true, '{"placeholder":true}'::jsonb),
     ('phone', 'Telefono Benjamin', '+56XXXXXXXXX', false, '{"placeholder":true}'::jsonb),
     ('phone', 'Telefono Carlos', '+56XXXXXXXXX', false, '{"placeholder":true}'::jsonb)

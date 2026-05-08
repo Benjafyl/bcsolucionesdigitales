@@ -57,7 +57,7 @@ Antes de publicar, reemplaza estos datos en `index.html`:
 
 - Telefono: `+56 9 0000 0000`
 - WhatsApp: `https://wa.me/56900000000`
-- Correo: `contacto@bcsolucionesdigitales.com`
+- Correo: `benjafyl@gmail.com`
 - Instagram: `https://instagram.com/bcsolucionesdigitales`
 - Facebook y LinkedIn: links placeholder actuales
 

@@ -45,7 +45,7 @@ Usar placeholders hasta tener datos finales:
 - WhatsApp bot: `+56XXXXXXXXX`
 - Telefono Benjamin: `+56XXXXXXXXX`
 - Telefono Carlos: `+56XXXXXXXXX`
-- Correo: `contacto@bcsolucionesdigitales.com`
+- Correo: `benjafyl@gmail.com`
 
 ## Servicios iniciales
 

@@ -1,7 +1,20 @@
 import './styles.css';
 
+const WHATSAPP_NUMBER = '56972200928';
+const DEFAULT_WHATSAPP_MESSAGE = 'Hola, quiero cotizar una solucion digital para mi negocio.';
+
 const navToggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('[data-nav-links]');
+const quoteForm = document.querySelector('#quoteForm');
+const formStatus = document.querySelector('.form-status');
+
+function buildWhatsAppUrl(message) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+document.querySelectorAll('[data-whatsapp-link]').forEach((link) => {
+  link.setAttribute('href', buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE));
+});
 
 navToggle?.addEventListener('click', () => {
   const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
@@ -16,6 +29,23 @@ navLinks?.querySelectorAll('a').forEach((link) => {
   });
 });
 
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const targetId = link.getAttribute('href');
+    if (!targetId || targetId === '#') {
+      return;
+    }
+
+    const target = document.querySelector(targetId);
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -25,27 +55,20 @@ const revealObserver = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.16 },
+  { threshold: 0.14 },
 );
 
 document.querySelectorAll('.reveal').forEach((element) => {
   revealObserver.observe(element);
 });
 
-const contactForm = document.querySelector('#contactForm');
-const formStatus = document.querySelector('.form-status');
-const CONTACT_FUNCTION_URL =
-  import.meta.env.VITE_SUPABASE_CONTACT_FUNCTION_URL ||
-  'https://xhvkqkeqgnfxhwlibqrd.supabase.co/functions/v1/submit-contact-request';
-const SUBMIT_SUCCESS_MESSAGE = 'Solicitud enviada correctamente. Te contactaremos pronto.';
-const SUBMIT_ERROR_MESSAGE = 'No pudimos enviar tu solicitud. Intenta nuevamente o escríbenos por WhatsApp.';
-let isSubmittingContactForm = false;
-
 const validators = {
   name: (value) => (value.trim().length >= 2 ? '' : 'Ingresa tu nombre.'),
-  email: (value) =>
-    !value.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un email valido.',
-  message: (value) => (value.trim().length >= 5 ? '' : 'Escribe un mensaje de al menos 5 caracteres.'),
+  company: (value) => (value.trim().length >= 2 ? '' : 'Ingresa el nombre de tu empresa o negocio.'),
+  phone: (value) => (/^[+\d\s()-]{8,}$/.test(value.trim()) ? '' : 'Ingresa un telefono valido.'),
+  email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un correo valido.'),
+  service: (value) => (value ? '' : 'Selecciona un servicio de interes.'),
+  message: (value) => (value.trim().length >= 10 ? '' : 'Describe brevemente tu proyecto.'),
 };
 
 function setFieldError(fieldName, message) {
@@ -68,24 +91,10 @@ function setFormStatus(message, statusClass = '') {
   formStatus.className = `form-status${statusClass ? ` ${statusClass}` : ''}`;
 }
 
-function setSubmitState(isSubmitting) {
-  isSubmittingContactForm = isSubmitting;
-
-  const submitButton = contactForm?.querySelector('[type="submit"]');
-  if (submitButton) {
-    submitButton.disabled = isSubmitting;
-    submitButton.textContent = isSubmitting ? 'Enviando...' : 'Enviar consulta';
-  }
-}
-
-contactForm?.addEventListener('submit', async (event) => {
+quoteForm?.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  if (isSubmittingContactForm) {
-    return;
-  }
-
-  const formData = new FormData(contactForm);
+  const formData = new FormData(quoteForm);
   const values = Object.fromEntries(formData.entries());
   let firstInvalidField = null;
 
@@ -94,7 +103,7 @@ contactForm?.addEventListener('submit', async (event) => {
     setFieldError(fieldName, error);
 
     if (error && !firstInvalidField) {
-      firstInvalidField = contactForm.querySelector(`[name="${fieldName}"]`);
+      firstInvalidField = quoteForm.querySelector(`[name="${fieldName}"]`);
     }
   });
 
@@ -104,40 +113,17 @@ contactForm?.addEventListener('submit', async (event) => {
     return;
   }
 
-  const payload = {
-    name: String(values.name || '').trim(),
-    email: String(values.email || '').trim() || null,
-    phone: String(values.phone || '').trim() || null,
-    company_name: String(values.company_name || '').trim() || null,
-    service_interest: String(values.service_interest || '').trim() || null,
-    message: String(values.message || '').trim(),
-    accepted_whatsapp_contact: values.accepted_whatsapp_contact === 'on',
-  };
+  const message = [
+    `Hola, soy ${values.name}.`,
+    `Tengo el negocio/empresa: ${values.company}.`,
+    `Me interesa: ${values.service}.`,
+    `Mi correo es: ${values.email}.`,
+    `Mi telefono es: ${values.phone}.`,
+    `Descripcion del proyecto: ${values.message}.`,
+    '',
+    'Quiero cotizar con B&C Soluciones Digitales.',
+  ].join('\n');
 
-  setSubmitState(true);
-  setFormStatus('Enviando solicitud...');
-
-  try {
-    const response = await fetch(CONTACT_FUNCTION_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await response.json().catch(() => null);
-
-    if (!response.ok || !result?.success) {
-      throw new Error('submit_failed');
-    }
-
-    contactForm.reset();
-    Object.keys(validators).forEach((fieldName) => setFieldError(fieldName, ''));
-    setFormStatus(SUBMIT_SUCCESS_MESSAGE, 'is-success');
-  } catch {
-    setFormStatus(SUBMIT_ERROR_MESSAGE, 'is-error');
-  } finally {
-    setSubmitState(false);
-  }
+  setFormStatus('Abriendo WhatsApp con tu solicitud...', 'is-success');
+  window.open(buildWhatsAppUrl(message), '_blank', 'noopener');
 });

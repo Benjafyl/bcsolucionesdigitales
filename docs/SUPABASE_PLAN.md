@@ -268,7 +268,7 @@ Organizacion:
 - `name`: BC Soluciones Digitales
 - `slug`: byc
 - `website_url`: https://bcsolucionesdigitales.com
-- `contact_email`: contacto@bcsolucionesdigitales.com
+- `contact_email`: benjafyl@gmail.com
 - `contact_phone`: +56XXXXXXXXX
 
 Servicios iniciales:
