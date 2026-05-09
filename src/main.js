@@ -7,6 +7,12 @@ const navToggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('[data-nav-links]');
 const quoteForm = document.querySelector('#quoteForm');
 const formStatus = document.querySelector('.form-status');
+const formLoadedAtField = document.querySelector('#formLoadedAt');
+const pageLoadedAt = Date.now();
+
+if (formLoadedAtField) {
+  formLoadedAtField.value = String(pageLoadedAt);
+}
 
 function buildWhatsAppUrl(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -69,6 +75,7 @@ const validators = {
   email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un correo valido.'),
   service: (value) => (value ? '' : 'Selecciona un servicio de interes.'),
   message: (value) => (value.trim().length >= 10 ? '' : 'Describe brevemente tu proyecto.'),
+  humanCheck: (value) => (value.trim().toUpperCase() === 'BYC' ? '' : 'Escribe BYC para validar el formulario.'),
 };
 
 function setFieldError(fieldName, message) {
@@ -96,7 +103,20 @@ quoteForm?.addEventListener('submit', (event) => {
 
   const formData = new FormData(quoteForm);
   const values = Object.fromEntries(formData.entries());
+  const botField = String(values.website || '').trim();
+  const loadedAt = Number(values.formLoadedAt || pageLoadedAt);
+  const elapsedSeconds = (Date.now() - loadedAt) / 1000;
   let firstInvalidField = null;
+
+  if (botField) {
+    setFormStatus('No pudimos validar tu envio. Intentalo nuevamente.', 'is-error');
+    return;
+  }
+
+  if (elapsedSeconds < 3) {
+    setFormStatus('Espera unos segundos y vuelve a enviar el formulario.', 'is-error');
+    return;
+  }
 
   Object.entries(validators).forEach(([fieldName, validate]) => {
     const error = validate(String(values[fieldName] || ''));
