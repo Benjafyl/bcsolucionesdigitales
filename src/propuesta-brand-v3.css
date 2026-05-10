@@ -732,32 +732,34 @@ p {
 
 .service-highlight__layout {
   display: grid;
-  grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+  gap: 26px;
+  align-items: center;
 }
 
 .service-highlight__layout h2 {
-  max-width: 9ch;
+  max-width: 11ch;
   margin-bottom: 0;
+  font-size: clamp(2rem, 2.6vw, 3rem);
 }
 
 .service-highlight__copy {
   display: grid;
-  align-content: start;
-  gap: 10px;
+  align-content: center;
+  gap: 12px;
+  padding-right: 8px;
 }
 
 .service-highlight__points {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
 .service-point {
   border: 1px solid rgba(143, 162, 138, 0.1);
   border-radius: 20px;
-  padding: 16px 16px 15px;
+  padding: 18px 18px 16px;
   background: rgba(17, 20, 17, 0.22);
   transition:
     transform 180ms ease,
@@ -776,7 +778,7 @@ p {
 
 .service-point strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: var(--text);
   font-size: 0.98rem;
   line-height: 1.28;
@@ -787,6 +789,14 @@ p {
   color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+.services-page .page-hero-copy h1 {
+  max-width: 12.4ch;
+}
+
+.services-page .page-hero {
+  gap: 22px;
 }
 
 .service-cta-strip {
