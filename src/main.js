@@ -1,7 +1,7 @@
 import './styles.css';
 
 const WHATSAPP_NUMBER = '56972200928';
-const DEFAULT_WHATSAPP_MESSAGE = 'Hola, quiero cotizar una solucion digital para mi negocio.';
+const DEFAULT_WHATSAPP_MESSAGE = 'Hola, quiero cotizar una solución digital para mi negocio.';
 
 const navToggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('[data-nav-links]');
@@ -76,11 +76,10 @@ document.querySelectorAll('.reveal').forEach((element) => {
 const validators = {
   name: (value) => (value.trim().length >= 2 ? '' : 'Ingresa tu nombre.'),
   company: (value) => (value.trim().length >= 2 ? '' : 'Ingresa el nombre de tu empresa o negocio.'),
-  phone: (value) => (/^[+\d\s()-]{8,}$/.test(value.trim()) ? '' : 'Ingresa un telefono valido.'),
-  email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un correo valido.'),
-  service: (value) => (value ? '' : 'Selecciona un servicio de interes.'),
+  phone: (value) => (/^[+\d\s()-]{8,}$/.test(value.trim()) ? '' : 'Ingresa un teléfono válido.'),
+  email: (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingresa un correo válido.'),
+  service: (value) => (value ? '' : 'Selecciona un servicio de interés.'),
   message: (value) => (value.trim().length >= 10 ? '' : 'Describe brevemente tu proyecto.'),
-  humanCheck: (value) => (value.trim().toUpperCase() === 'BYC' ? '' : 'Escribe BYC para validar el formulario.'),
 };
 
 function setFieldError(fieldName, message) {
@@ -114,7 +113,7 @@ quoteForm?.addEventListener('submit', (event) => {
   let firstInvalidField = null;
 
   if (botField) {
-    setFormStatus('No pudimos validar tu envio. Intentalo nuevamente.', 'is-error');
+    setFormStatus('No pudimos validar tu envío. Inténtalo nuevamente.', 'is-error');
     return;
   }
 
@@ -143,8 +142,8 @@ quoteForm?.addEventListener('submit', (event) => {
     `Tengo el negocio/empresa: ${values.company}.`,
     `Me interesa: ${values.service}.`,
     `Mi correo es: ${values.email}.`,
-    `Mi telefono es: ${values.phone}.`,
-    `Descripcion del proyecto: ${values.message}.`,
+    `Mi teléfono es: ${values.phone}.`,
+    `Descripción del proyecto: ${values.message}.`,
     '',
     'Quiero cotizar con B&C Soluciones.',
   ].join('\n');

@@ -97,6 +97,7 @@ img {
 }
 
 .brand-mark {
+  position: relative;
   display: inline-grid;
   width: 46px;
   height: 46px;
@@ -106,8 +107,33 @@ img {
   color: var(--text);
   background: linear-gradient(135deg, var(--brand), #71846d);
   box-shadow: 0 18px 40px rgba(94, 111, 91, 0.26);
-  font-size: 0.78rem;
+  overflow: hidden;
+  font-size: 0;
   letter-spacing: 0;
+}
+
+.brand-mark::before,
+.brand-mark::after {
+  position: absolute;
+  content: "";
+}
+
+.brand-mark::before {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(243, 244, 239, 0.92);
+  border-left-color: transparent;
+  border-radius: 7px;
+  transform: rotate(45deg);
+}
+
+.brand-mark::after {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--text);
+  box-shadow: 12px 0 0 rgba(243, 244, 239, 0.7);
+  transform: translate(-6px, 7px);
 }
 
 .brand-text {
@@ -451,7 +477,8 @@ p {
 }
 
 .summary-grid,
-.services-grid {
+.services-grid,
+.use-case-grid {
   display: grid;
   gap: 18px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -459,6 +486,7 @@ p {
 
 .summary-card,
 .service-card,
+.use-case-card,
 .timeline-item,
 .faq-item,
 .contact-form,
@@ -473,7 +501,8 @@ p {
 }
 
 .summary-card,
-.service-card {
+.service-card,
+.use-case-card {
   border-radius: var(--radius);
   padding: 24px;
   transition:
@@ -483,7 +512,8 @@ p {
 }
 
 .summary-card:hover,
-.service-card:hover {
+.service-card:hover,
+.use-case-card:hover {
   border-color: var(--border-strong);
   background:
     linear-gradient(180deg, rgba(143, 162, 138, 0.08), rgba(243, 244, 239, 0.02)),
@@ -508,10 +538,26 @@ p {
 .service-card p,
 .service-card small,
 .service-card strong,
+.use-case-card p,
 .timeline-item p,
 .check-list p,
 .faq-item p {
   margin: 0;
+}
+
+.automation-list {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.automation-list span {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 14px;
+  color: var(--muted-strong);
+  background: rgba(243, 244, 239, 0.035);
+  font-weight: 800;
 }
 
 .service-card {
@@ -908,7 +954,9 @@ textarea:focus {
   }
 
   .summary-grid,
-  .services-grid {
+  .services-grid,
+  .use-case-grid,
+  .automation-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1005,7 +1053,9 @@ textarea:focus {
   }
 
   .summary-grid,
-  .services-grid {
+  .services-grid,
+  .use-case-grid,
+  .automation-list {
     grid-template-columns: 1fr;
   }
 
