@@ -631,6 +631,8 @@ p {
 }
 
 .service-detail-card {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--line);
   border-radius: 26px;
   padding: 26px;
@@ -716,7 +718,8 @@ p {
 
 .service-detail-card small {
   display: block;
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 16px;
   font-size: 0.86rem;
   font-weight: 700;
 }
@@ -748,6 +751,13 @@ p {
   align-content: center;
   gap: 12px;
   padding-right: 8px;
+}
+
+.service-highlight__copy p:not(.section-kicker) {
+  max-width: 40ch;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
 }
 
 .service-highlight__points {
@@ -820,6 +830,17 @@ p {
 .service-cta-strip p {
   margin: 0;
   color: var(--text-muted);
+}
+
+.service-cta-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.service-cta-copy span {
+  color: var(--accent-soft);
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .services-page .page-hero-card,
