@@ -61,9 +61,18 @@ Antes de publicar, reemplaza estos datos en `index.html`:
 - Instagram: `https://instagram.com/bcsolucionesdigitales`
 - Facebook y LinkedIn: links placeholder actuales
 
+## Branding
+
+La guia oficial de identidad visual y verbal del proyecto esta en:
+
+[docs/branding.md](docs/branding.md)
+
+Antes de modificar colores, tono, estructura visual, componentes principales o mensajes comerciales, revisar ese documento.
+
 ## Documentacion del proyecto
 
 - [AGENTS.md](AGENTS.md)
+- [docs/branding.md](docs/branding.md)
 - [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)

@@ -18,8 +18,30 @@ function buildWhatsAppUrl(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+function normalizePath(pathname) {
+  if (pathname === '/index.html') {
+    return '/';
+  }
+
+  return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
+document.querySelectorAll('[data-current-year]').forEach((element) => {
+  element.textContent = String(new Date().getFullYear());
+});
+
 document.querySelectorAll('[data-whatsapp-link]').forEach((link) => {
   link.setAttribute('href', buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE));
+});
+
+document.querySelectorAll('[data-nav-link]').forEach((link) => {
+  const linkPath = normalizePath(new URL(link.href).pathname);
+  const currentPath = normalizePath(window.location.pathname);
+
+  if (linkPath === currentPath) {
+    link.classList.add('is-active');
+    link.setAttribute('aria-current', 'page');
+  }
 });
 
 navToggle?.addEventListener('click', () => {
@@ -32,23 +54,6 @@ navLinks?.querySelectorAll('a').forEach((link) => {
   link.addEventListener('click', () => {
     navToggle?.setAttribute('aria-expanded', 'false');
     navLinks.classList.remove('is-open');
-  });
-});
-
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    if (!targetId || targetId === '#') {
-      return;
-    }
-
-    const target = document.querySelector(targetId);
-    if (!target) {
-      return;
-    }
-
-    event.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
@@ -141,7 +146,7 @@ quoteForm?.addEventListener('submit', (event) => {
     `Mi telefono es: ${values.phone}.`,
     `Descripcion del proyecto: ${values.message}.`,
     '',
-    'Quiero cotizar con B&C Soluciones Digitales.',
+    'Quiero cotizar con B&C Soluciones.',
   ].join('\n');
 
   setFormStatus('Abriendo WhatsApp con tu solicitud...', 'is-success');
